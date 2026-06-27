@@ -22,10 +22,20 @@ jobs:
           pip install -r requirements.txt
           pip install pyinstaller
 
+      - name: Verify dependencies installed
+        run: |
+          python -c "import docx; print('python-docx OK', docx.__file__)"
+          python -c "import openpyxl; print('openpyxl OK', openpyxl.__file__)"
+          python -c "import tkinterdnd2; print('tkinterdnd2 OK', tkinterdnd2.__file__)"
+
       - name: Build EXE
         run: >
           pyinstaller --onefile --windowed --name MR_FormFiller
           --collect-all tkinterdnd2
+          --collect-all docx
+          --collect-all openpyxl
+          --hidden-import docx
+          --hidden-import openpyxl
           --add-data "core;core"
           app.py
 
